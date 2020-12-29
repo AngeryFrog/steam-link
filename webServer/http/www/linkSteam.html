@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://discord.frogbot.dev/css">
+    <link rel="stylesheet" media="screen" href="https://frogbot.dev/css/style.css">
+    <title>Link your steam!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        onSubmit = (token) => {
+            let steamUrl = $("input").val();
+            $.post('https://discord.frogbot.dev:5780/connectsteam',{steamUrl, token, linkToken: window.location.pathname.split('/')[2]}, (data)=>{
+                console.log(JSON.parse(data))
+                if(JSON.parse(data).success){
+                    document.getElementById('response').innerHTML='You have successfully linked your discord to your steam account!';
+                }else{
+                    document.getElementById('response').innerHTML=JSON.parse(data).err;
+                }
+            })
+        }
+    </script> 
+</head>
+<body>
+    <div id="particles-js"></div>   
+    <form id="steamLinking">
+        <input type="text" autofocus placeholder="Steam url">
+        <button class="g-recaptcha" 
+        data-sitekey="6LdiQf0ZAAAAAO-v_gIwiJOKVW0gLWQMfHpMi_-v" 
+        data-callback='onSubmit' 
+        data-action='submit'>Link</button>
+        <div id="response">
+    </form>
+    <script type="text/javascript" src="https://frogbot.dev/js/particles.js"></script>
+    <script type="text/javascript" src="https://frogbot.dev/js/app.js"></script>
+</body>
+</html>
